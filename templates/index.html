@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <!-- Viewport meta tag IS CRUCIAL for mobile responsiveness -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Онлайн-учебник: Устройство и история нейросетей</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,7 +18,8 @@
             transition: width 0.2s ease-out;
         }
 
-        .neuron { /* Оставляем на случай, если где-то используется */
+        /* Neuron and Connection styles kept as requested, even if potentially unused */
+        .neuron {
             width: 45px;
             height: 45px;
             border-radius: 50%;
@@ -31,7 +33,7 @@
             font-size: 0.9em;
         }
 
-        .connection { /* Оставляем на случай, если где-то используется */
+        .connection {
             height: 1.5px;
             background-color: #93c5fd;
             position: relative;
@@ -48,6 +50,7 @@
             border-top: 3.5px solid transparent;
             border-bottom: 3.5px solid transparent;
         }
+        /* End Neuron/Connection styles */
 
         .quiz-option {
             transition: all 0.2s ease-in-out;
@@ -77,21 +80,21 @@
 
         .floating-nav {
             position: fixed;
-            right: 1.5rem;
+            right: 1.5rem; /* Tailwind: right-6 */
             top: 50%;
             transform: translateY(-50%);
-            z-index: 100;
+            z-index: 100; /* Ensure it's above content */
         }
 
         /* Стили для Timeline */
         .timeline-item:not(:last-child)::after {
             content: '';
             position: absolute;
-            left: 11px;
-            top: 24px;
-            height: calc(100% - 12px);
+            left: 11px; /* Adjusted for 24px icon width */
+            top: 24px; /* Start below the icon center */
+            height: calc(100% - 12px); /* Extend down */
             width: 2px;
-            background: #dbeafe;
+            background: #dbeafe; /* Tailwind: bg-blue-100 */
         }
 
         .timeline-icon {
@@ -102,11 +105,11 @@
             justify-content: center;
             width: 24px;
             height: 24px;
-            border-radius: 50%;
-            background: #3b82f6;
+            border-radius: 50%; /* Tailwind: rounded-full */
+            background: #3b82f6; /* Tailwind: bg-blue-600 */
             color: white;
             z-index: 10;
-            box-shadow: 0 0 0 3px white;
+            box-shadow: 0 0 0 3px white; /* Creates the white ring */
         }
 
         .highlight-text {
@@ -127,17 +130,17 @@
 
         /* Стили для интерактивной схемы слоев из раздела Basics */
         .nn-layer.active {
-            border-color: #3b82f6 !important; /* Ярко-синяя рамка для активного */
+            border-color: #3b82f6 !important; /* Ярко-синяя рамка для активного - !important kept due to potential specificity conflict */
             background-color: #eff6ff !important; /* Светло-голубой фон */
         }
 
-        .nn-layer:focus { /* Для доступности */
-            outline: 2px solid #2563eb;
+        .nn-layer:focus { /* For accessibility */
+            outline: 2px solid #2563eb; /* Tailwind: outline-blue-700 */
             outline-offset: 2px;
         }
 
         .explanation-content {
-            transition: opacity 0.3s ease-in-out;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; /* Added visibility to transition */
         }
 
         .explanation-content.hidden {
@@ -148,23 +151,28 @@
             padding-bottom: 0;
             margin-bottom: 0;
             border-width: 0;
-            visibility: hidden; /* Добавим для надежности */
+            visibility: hidden; /* Make truly hidden */
+            /* Prevent interaction when hidden */
+            pointer-events: none;
         }
 
         .explanation-content.block {
             opacity: 1;
             visibility: visible;
-            /* Размеры и отступы управляются Tailwind классами p-6 и т.д. */
+            /* Other properties are managed by Tailwind classes (e.g., p-6) */
+            /* Allow interaction when visible */
+            pointer-events: auto;
         }
 
     </style>
 </head>
-<body class="bg-gray-100 font-sans text-gray-700 leading-relaxed">
+<body class="bg-gray-100 font-sans text-gray-700 leading-relaxed antialiased"> <!-- Added antialiased for smoother fonts -->
 
 <!-- Progress bar -->
 <div class="progress-bar fixed top-0 left-0 z-50" style="width: 0"></div>
 
 <!-- Floating navigation -->
+<!-- hidden md:block ensures this is only visible on medium screens and up -->
 <aside class="floating-nav hidden md:block">
     <div class="bg-white rounded-lg shadow-lg p-4 border border-gray-200">
         <h3 class="font-bold text-blue-800 mb-3 text-sm">Навигация</h3>
@@ -200,6 +208,7 @@
 </aside>
 
 <!-- Header -->
+<!-- Responsive text sizes (text-4xl md:text-5xl) and padding (py-16 px-4) -->
 <header class="bg-gradient-to-r from-blue-700 to-blue-500 text-white py-16 px-4 shadow-md">
     <div class="container mx-auto text-center">
         <h1 class="text-4xl md:text-5xl font-bold mb-4">Нейросети</h1>
@@ -213,19 +222,21 @@
 </header>
 
 <!-- Main content -->
+<!-- container mx-auto px-4 py-12 provides responsive padding and centering -->
 <main class="container mx-auto px-4 py-12">
 
     <!-- Introduction section -->
+    <!-- scroll-mt-20 ensures fixed headers don't overlap the section title on jump -->
     <section id="intro" class="mb-16 scroll-mt-20">
         <div class="flex items-center mb-6">
-            <div class="bg-blue-100 p-3 rounded-full mr-4">
+            <div class="bg-blue-100 p-3 rounded-full mr-4 flex-shrink-0"> <!-- Added flex-shrink-0 -->
                 <i class="fas fa-home text-blue-600 text-xl" aria-hidden="true"></i>
             </div>
             <h2 class="text-3xl font-bold text-gray-800">Введение в нейросети</h2>
         </div>
 
         <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mb-8">
-            <div class="p-8">
+            <div class="p-6 md:p-8"> <!-- Slightly reduced padding on smaller screens -->
                 <p class="mb-6">Добро пожаловать! Данный онлайн-учебник представляет собой структурированное введение в
                     область <strong>нейронных сетей</strong>. Его цель — предоставить доступное изложение принципов
                     работы этих сложных систем, вдохновленных биологическими нейронными сетями, и продемонстрировать их
@@ -243,7 +254,8 @@
                 </div>
 
                 <h3 class="text-xl font-semibold text-gray-800 mb-4">Почему нейросети так важны сегодня?</h3>
-                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <!-- Grid adapts: 1 column on small, 3 on medium+ -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <div class="bg-white p-5 rounded-lg border border-gray-200 card-hover-effect">
                         <div class="text-blue-500 mb-3 text-2xl"><i class="fas fa-chart-line" aria-hidden="true"></i>
                         </div>
@@ -281,24 +293,26 @@
     <!-- History section -->
     <section id="history" class="mb-16 scroll-mt-20">
         <div class="flex items-center mb-6">
-            <div class="bg-blue-100 p-3 rounded-full mr-4">
+            <div class="bg-blue-100 p-3 rounded-full mr-4 flex-shrink-0"> <!-- Added flex-shrink-0 -->
                 <i class="fas fa-history text-blue-600 text-xl" aria-hidden="true"></i>
             </div>
             <h2 class="text-3xl font-bold text-gray-800">История нейросетей: От идеи до революции</h2>
         </div>
 
-        <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mb-8 p-8">
+        <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mb-8 p-6 md:p-8"> <!-- Responsive padding -->
             <p class="mb-10 text-center text-gray-600 max-w-3xl mx-auto">Путь нейросетей был долгим и извилистым: от
                 первых теоретических моделей до мощных систем, меняющих наш мир.</p>
 
+            <!-- Timeline: Relative positioning should work fine on mobile, text will wrap -->
             <div class="relative max-w-3xl mx-auto">
                 <!-- 1940-1960: Фундамент -->
                 <div class="timeline-item relative pl-10 pb-10">
                     <div class="timeline-icon"><i class="fas fa-lightbulb text-xs"></i></div>
                     <div class="ml-4">
-                        <div class="flex justify-between items-center mb-2">
+                        <!-- Flex wrap for smaller screens if needed, though likely fine -->
+                        <div class="flex flex-wrap justify-between items-center mb-2 gap-2">
                             <span class="font-bold text-blue-600 text-lg">1940-е – 1950-е</span>
-                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full font-medium">Зарождение идеи</span>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0">Зарождение идеи</span>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-800 mb-2">Первые шаги</h3>
                         <p class="text-sm text-gray-600 mb-3">
@@ -321,9 +335,9 @@
                 <div class="timeline-item relative pl-10 pb-10">
                     <div class="timeline-icon bg-yellow-500"><i class="fas fa-pause text-xs"></i></div>
                     <div class="ml-4">
-                        <div class="flex justify-between items-center mb-2">
+                        <div class="flex flex-wrap justify-between items-center mb-2 gap-2">
                             <span class="font-bold text-yellow-600 text-lg">1960-е – 1970-е</span>
-                            <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-0.5 rounded-full font-medium">Первая "Зима ИИ"</span>
+                            <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0">Первая "Зима ИИ"</span>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-800 mb-2">Ограничения и застой</h3>
                         <p class="text-sm text-gray-600 mb-3">
@@ -346,9 +360,9 @@
                 <div class="timeline-item relative pl-10 pb-10">
                     <div class="timeline-icon bg-green-500"><i class="fas fa-bolt text-xs"></i></div>
                     <div class="ml-4">
-                        <div class="flex justify-between items-center mb-2">
+                        <div class="flex flex-wrap justify-between items-center mb-2 gap-2">
                             <span class="font-bold text-green-600 text-lg">1980-е</span>
-                            <span class="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full font-medium">Возрождение</span>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0">Возрождение</span>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-800 mb-2">Новые алгоритмы обучения</h3>
                         <p class="text-sm text-gray-600 mb-3">
@@ -371,9 +385,9 @@
                 <div class="timeline-item relative pl-10 pb-10">
                     <div class="timeline-icon bg-purple-500"><i class="fas fa-cogs text-xs"></i></div>
                     <div class="ml-4">
-                        <div class="flex justify-between items-center mb-2">
+                        <div class="flex flex-wrap justify-between items-center mb-2 gap-2">
                             <span class="font-bold text-purple-600 text-lg">1990-е – 2000-е</span>
-                            <span class="bg-purple-100 text-purple-800 text-xs px-2 py-0.5 rounded-full font-medium">Специализация</span>
+                            <span class="bg-purple-100 text-purple-800 text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0">Специализация</span>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-800 mb-2">Развитие архитектур</h3>
                         <p class="text-sm text-gray-600 mb-3">
@@ -397,9 +411,9 @@
                 <div class="timeline-item relative pl-10 pb-10">
                     <div class="timeline-icon bg-red-500"><i class="fas fa-rocket text-xs"></i></div>
                     <div class="ml-4">
-                        <div class="flex justify-between items-center mb-2">
+                        <div class="flex flex-wrap justify-between items-center mb-2 gap-2">
                             <span class="font-bold text-red-600 text-lg">2010-е</span>
-                            <span class="bg-red-100 text-red-800 text-xs px-2 py-0.5 rounded-full font-medium">Расцвет Deep Learning</span>
+                            <span class="bg-red-100 text-red-800 text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0">Расцвет Deep Learning</span>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-800 mb-2">Прорывы и признание</h3>
                         <p class="text-sm text-gray-600 mb-3">
@@ -421,12 +435,12 @@
                 </div>
 
                 <!-- 2020-Настоящее время: Революция -->
-                <div class="timeline-item relative pl-10"> <!-- У последнего элемента нет pb-10 -->
+                <div class="timeline-item relative pl-10"> <!-- No bottom padding on last item -->
                     <div class="timeline-icon bg-indigo-500"><i class="fas fa-star text-xs"></i></div>
                     <div class="ml-4">
-                        <div class="flex justify-between items-center mb-2">
+                        <div class="flex flex-wrap justify-between items-center mb-2 gap-2">
                             <span class="font-bold text-indigo-600 text-lg">2020-е – н.в.</span>
-                            <span class="bg-indigo-100 text-indigo-800 text-xs px-2 py-0.5 rounded-full font-medium">Современность</span>
+                            <span class="bg-indigo-100 text-indigo-800 text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0">Современность</span>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-800 mb-2">Большие модели и мультимодальность</h3>
                         <p class="text-sm text-gray-600 mb-3">
@@ -448,6 +462,7 @@
             </div> <!-- Конец timeline -->
         </div>
 
+        <!-- Navigation buttons adapt nicely -->
         <div class="flex justify-between items-center mt-8">
             <a href="#intro" class="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center transition">
                 <i class="fas fa-arrow-left mr-2" aria-hidden="true"></i> Назад: Введение
@@ -462,16 +477,16 @@
     <!-- Basics section -->
     <section id="basics" class="mb-16 scroll-mt-20">
         <div class="flex items-center mb-6">
-            <div class="bg-blue-100 p-3 rounded-full mr-4">
+            <div class="bg-blue-100 p-3 rounded-full mr-4 flex-shrink-0"> <!-- Added flex-shrink-0 -->
                 <i class="fas fa-brain text-blue-600 text-xl" aria-hidden="true"></i>
             </div>
             <h2 class="text-3xl font-bold text-gray-800">Основы: Из чего состоит нейросеть?</h2>
         </div>
 
         <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mb-8">
-            <div class="p-8">
-                <!-- === НАЧАЛО ЗАМЕНЕННОГО БЛОКА === -->
-                <div id="neuron-explanation" class="mb-12"> <!-- Используем div вместо section для вложенности -->
+            <div class="p-6 md:p-8"> <!-- Responsive padding -->
+                <!-- === Блок с объяснениями - Без изменений в тексте === -->
+                <div id="neuron-explanation" class="mb-12">
                     <h3 class="text-2xl font-semibold text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">🧠 Что такое
                         искусственный нейрон?</h3>
                     <p class="text-gray-700 mb-4">
@@ -505,23 +520,25 @@
                         Нажмите на части схемы ниже, чтобы узнать подробнее о каждом слое:
                     </p>
 
-                    <div class="nn-interactive-area flex flex-col md:flex-row gap-8 mt-6 items-start">
-                        <!-- Схема нейросети (Tailwind) -->
-                        <div class="nn-diagram flex-shrink-0 w-full md:w-auto md:basis-1/3 bg-gray-100 p-4 rounded-lg border border-gray-300 flex flex-col md:flex-row justify-around items-center relative min-h-[250px]">
-                            <!-- Входной слой -->
+                    <!-- Interactive Area: Stacks vertically on small screens (flex-col), horizontally on medium+ (md:flex-row) -->
+                    <div class="nn-interactive-area flex flex-col md:flex-row gap-6 md:gap-8 mt-6 items-start">
+                        <!-- NN Diagram: Adapts width -->
+                        <div class="nn-diagram flex-shrink-0 w-full md:w-auto md:max-w-xl lg:max-w-xl bg-gray-100 p-4 rounded-lg border border-gray-300 flex flex-col md:flex-row justify-around items-center relative min-h-[250px] mw-0 overflow-auto">
+                            <!-- Input Layer -->
                             <div class="nn-layer input-layer-vis flex flex-col items-center gap-3 p-3 border-2 border-transparent rounded-lg cursor-pointer transition duration-300 ease-in-out hover:bg-gray-200 mb-4 md:mb-0"
                                  data-target="input-explanation" tabindex="0" role="button"
                                  aria-label="Показать описание входного слоя">
                                 <div class="layer-label font-semibold text-sm mb-1 text-center text-gray-600">Входной
                                     слой
                                 </div>
+                                <!-- Simplified visual representation -->
                                 <div class="neuron-vis w-8 h-8 bg-white border-2 border-gray-300 rounded-full shadow-sm"></div>
                                 <div class="neuron-vis w-8 h-8 bg-white border-2 border-gray-300 rounded-full shadow-sm"></div>
                                 <div class="neuron-vis w-8 h-8 bg-white border-2 border-gray-300 rounded-full shadow-sm"></div>
                             </div>
-                            <!-- Упрощенные связи -->
-                            <div class="connections text-gray-300 text-4xl hidden md:block mx-4">→</div>
-                            <!-- Скрытый слой -->
+                            <!-- Connections Arrow (Hidden on small screens) -->
+                            <div class="connections text-gray-300 text-4xl hidden md:block mx-4 transform md:rotate-0 rotate-90 my-2 md:my-0">→</div>
+                            <!-- Hidden Layer -->
                             <div class="nn-layer hidden-layer-vis flex flex-col items-center gap-3 p-3 border-2 border-transparent rounded-lg cursor-pointer transition duration-300 ease-in-out hover:bg-gray-200 mb-4 md:mb-0"
                                  data-target="hidden-explanation" tabindex="0" role="button"
                                  aria-label="Показать описание скрытого слоя">
@@ -533,9 +550,9 @@
                                 <div class="neuron-vis w-8 h-8 bg-white border-2 border-gray-300 rounded-full shadow-sm"></div>
                                 <div class="neuron-vis w-8 h-8 bg-white border-2 border-gray-300 rounded-full shadow-sm"></div>
                             </div>
-                            <!-- Упрощенные связи -->
-                            <div class="connections text-gray-300 text-4xl hidden md:block mx-4">→</div>
-                            <!-- Выходной слой -->
+                            <!-- Connections Arrow (Hidden on small screens) -->
+                            <div class="connections text-gray-300 text-4xl hidden md:block mx-4 transform md:rotate-0 rotate-90 my-2 md:my-0">→</div>
+                            <!-- Output Layer -->
                             <div class="nn-layer output-layer-vis flex flex-col items-center gap-3 p-3 border-2 border-transparent rounded-lg cursor-pointer transition duration-300 ease-in-out hover:bg-gray-200"
                                  data-target="output-explanation" tabindex="0" role="button"
                                  aria-label="Показать описание выходного слоя">
@@ -547,15 +564,17 @@
                             </div>
                         </div>
 
-                        <!-- Карточки с объяснениями (Tailwind) -->
-                        <div class="layer-explanations flex-grow min-h-[250px] relative">
+                        <!-- Layer Explanations: Takes remaining space, ensures minimum height -->
+                        <div class="layer-explanations flex-grow w-full md:w-auto min-h-[250px] relative">
+                            <!-- Default Message -->
                             <div id="explanation-default"
-                                 class="explanation-content block p-4 border border-gray-200 rounded-lg bg-gray-50 text-gray-600 absolute inset-0">
-                                <p class="text-center mt-16">Нажмите на один из слоев на схеме слева, чтобы прочитать
+                                 class="explanation-content block p-4 border border-gray-200 rounded-lg bg-gray-50 text-gray-600 absolute inset-0 flex items-center justify-center">
+                                <p class="text-center text-sm">Нажмите на один из слоев на схеме слева, чтобы прочитать
                                     его описание.</p>
                             </div>
+                            <!-- Input Layer Explanation -->
                             <div id="input-explanation"
-                                 class="explanation-content hidden p-6 border border-blue-200 rounded-lg bg-blue-50 absolute inset-0">
+                                 class="explanation-content hidden p-6 border border-blue-200 rounded-lg bg-blue-50 absolute inset-0 overflow-auto">
                                 <h4 class="text-lg font-semibold text-blue-800 mb-3">Входной слой (Input Layer)</h4>
                                 <p class="text-gray-700 mb-3 text-sm">Это "дверь" для информации в нейросеть. Каждый
                                     нейрон в этом слое соответствует одному входному параметру. Например, если нейросеть
@@ -565,8 +584,9 @@
                                 <p class="text-gray-700 text-sm"><strong class="font-semibold">Задача:</strong> Принять
                                     необработанные данные и передать их дальше.</p>
                             </div>
+                            <!-- Hidden Layer Explanation -->
                             <div id="hidden-explanation"
-                                 class="explanation-content hidden p-6 border border-yellow-300 rounded-lg bg-yellow-50 absolute inset-0">
+                                 class="explanation-content hidden p-6 border border-yellow-300 rounded-lg bg-yellow-50 absolute inset-0 overflow-auto">
                                 <h4 class="text-lg font-semibold text-yellow-800 mb-3">Скрытый слой (Hidden Layer)</h4>
                                 <p class="text-gray-700 mb-3 text-sm">Это "мозг" нейросети. Здесь происходит основная
                                     "магия". Нейроны этого слоя получают сигналы от входного слоя (или предыдущего
@@ -579,8 +599,9 @@
                                 <p class="text-gray-700 text-sm"><strong class="font-semibold">Задача:</strong>
                                     Анализировать информацию, находить сложные взаимосвязи и паттерны.</p>
                             </div>
+                            <!-- Output Layer Explanation -->
                             <div id="output-explanation"
-                                 class="explanation-content hidden p-6 border border-red-200 rounded-lg bg-red-50 absolute inset-0">
+                                 class="explanation-content hidden p-6 border border-red-200 rounded-lg bg-red-50 absolute inset-0 overflow-auto">
                                 <h4 class="text-lg font-semibold text-red-800 mb-3">Выходной слой (Output Layer)</h4>
                                 <p class="text-gray-700 mb-3 text-sm">Это "рот" нейросети. Он выдает окончательный
                                     результат работы всей сети. Количество нейронов здесь зависит от задачи. Если сеть
@@ -621,18 +642,18 @@
                                 <strong class="text-blue-700">Сигмоида (Sigmoid):</strong> Превращает любое входное
                                 число в значение от 0 до 1. Удобно, когда нужно получить вероятность (например,
                                 вероятность того, что на картинке кошка – 0.9, то есть 90%). <code
-                                    class="text-xs bg-blue-100 px-1 py-0.5 rounded">f(x) = 1 / (1 + e⁻ˣ)</code>
+                                    class="text-xs bg-blue-100 px-1 py-0.5 rounded break-words">f(x) = 1 / (1 + e⁻ˣ)</code> <!-- Added break-words for small screens -->
                             </li>
                             <li class="bg-yellow-50 p-4 rounded border-l-4 border-yellow-400">
                                 <strong class="text-yellow-700">ReLU (Rectified Linear Unit):</strong> Очень популярная
                                 функция. Если сумма сигналов положительная – выдает эту же сумму. Если отрицательная или
                                 ноль – выдает ноль. Быстрая и эффективная для многих задач. <code
-                                    class="text-xs bg-yellow-100 px-1 py-0.5 rounded">f(x) = max(0, x)</code>
+                                    class="text-xs bg-yellow-100 px-1 py-0.5 rounded break-words">f(x) = max(0, x)</code>
                             </li>
                             <li class="bg-purple-50 p-4 rounded border-l-4 border-purple-400">
                                 <strong class="text-purple-700">Tanh (Гиперболический тангенс):</strong> Похожа на
                                 сигмоиду, но выдает значения в диапазоне от -1 до 1. Иногда используется в скрытых
-                                слоях. <code class="text-xs bg-purple-100 px-1 py-0.5 rounded">f(x) = tanh(x)</code>
+                                слоях. <code class="text-xs bg-purple-100 px-1 py-0.5 rounded break-words">f(x) = tanh(x)</code>
                             </li>
                         </ul>
                     </div>
@@ -640,7 +661,7 @@
 
                 <p class="mt-8 pt-4 border-t border-gray-200 text-gray-600 text-sm">Надеемся, это объяснение помогло вам
                     лучше понять устройство нейросети на базовом уровне!</p>
-                <!-- === КОНЕЦ ЗАМЕНЕННОГО БЛОКА === -->
+                <!-- === КОНЕЦ БЛОКА С ОБЪЯСНЕНИЯМИ === -->
             </div>
         </div>
 
@@ -659,22 +680,23 @@
     <!-- Structure section -->
     <section id="structure" class="mb-16 scroll-mt-20">
         <div class="flex items-center mb-6">
-            <div class="bg-blue-100 p-3 rounded-full mr-4">
+            <div class="bg-blue-100 p-3 rounded-full mr-4 flex-shrink-0"> <!-- Added flex-shrink-0 -->
                 <i class="fas fa-project-diagram text-blue-600 text-xl" aria-hidden="true"></i>
             </div>
             <h2 class="text-3xl font-bold text-gray-800">Архитектура: Как устроены разные нейросети?</h2>
         </div>
 
         <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mb-8">
-            <div class="p-8">
+            <div class="p-6 md:p-8"> <!-- Responsive padding -->
                 <p class="mb-6"><strong>Архитектура</strong> нейросети – это ее "чертеж": как расположены слои и как
                     нейроны связаны друг с другом. Разные задачи требуют разных архитектур.</p>
 
                 <!-- MLP -->
                 <div class="mb-10 p-6 border border-gray-200 rounded-lg bg-gray-50">
                     <h3 class="text-xl font-semibold text-gray-800 mb-3">1. Полносвязные сети (MLP)</h3>
+                    <!-- Stacks on mobile (default flex-col), row on medium+ -->
                     <div class="md:flex md:gap-6">
-                        <div class="md:w-2/3">
+                        <div class="md:w-2/3 mb-4 md:mb-0"> <!-- Added margin bottom for mobile -->
                             <p class="text-sm mb-4">Самый простой тип. Каждый нейрон одного слоя связан со
                                 <strong>всеми</strong> нейронами следующего слоя. Их еще называют <strong>многослойными
                                     перцептронами (MLP)</strong>.</p>
@@ -689,12 +711,15 @@
                             </ul>
                         </div>
                         <div class="md:w-1/3 flex flex-col justify-center items-center">
-                            <div class="relative w-40 h-24">
-                                <!-- Визуализация MLP -->
+                            <!-- Image container for better control -->
+                            <div class="relative w-48 h-auto">
+                                <!-- Removed bad inline styles, added loading lazy, width/height for layout shift prevention -->
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Neural_network_explain.png/1200px-Neural_network_explain.png" alt="MLP Diagram"
-                                     class="w-full h-auto rounded-md shadow-sm border border-gray-300" style="max-width: none !important; width: 100% !important; height: auto !important; transform: scale(1.5);" title="Схема многослойного перцептрона">
+                                     class="w-full h-auto rounded-md shadow-sm border border-gray-300 object-contain"
+                                     loading="lazy" width="200" height="120" style="transform: scale(1.5)"
+                                     title="Схема многослойного перцептрона">
                             </div>
-                            <p class="text-center text-xs text-gray-500 mt-5">Схема MLP</p>
+                            <p class="text-center text-xs text-gray-500 mt-10">Схема MLP</p>
                         </div>
                     </div>
                 </div>
@@ -703,7 +728,7 @@
                 <div class="mb-10 p-6 border border-gray-200 rounded-lg bg-gray-50">
                     <h3 class="text-xl font-semibold text-gray-800 mb-3">2. Сверточные сети (CNN)</h3>
                     <div class="md:flex md:gap-6">
-                        <div class="md:w-2/3">
+                        <div class="md:w-2/3 mb-4 md:mb-0"> <!-- Added margin bottom for mobile -->
                             <p class="text-sm mb-4">Созданы специально для <strong>изображений</strong>. Используют
                                 "свертку" – операцию, где маленький <strong>фильтр (ядро)</strong> "скользит" по
                                 картинке, находя локальные признаки (линии, углы, текстуры). Слои таких фильтров
@@ -718,12 +743,14 @@
                             </ul>
                         </div>
                         <div class="md:w-1/3 flex flex-col justify-center items-center">
-                            <div class="relative w-48 h-24">
-                                <!-- Визуализация CNN -->
+                            <div class="relative w-48 h-auto">
+                                <!-- Removed bad inline styles, added loading lazy, width/height for layout shift prevention -->
                                 <img src="https://vitalflux.com/wp-content/uploads/2022/04/Typical-CNN-architecture.png" alt="CNN Diagram"
-                                class="w-full h-auto rounded-md shadow-sm border border-gray-300" style="max-width: none !important; width: 100% !important; height: auto !important; transform: scale(1.5);" title="Схема сверточной нейронной сети">
+                                     class="w-full h-auto rounded-md shadow-sm border border-gray-300 object-contain"
+                                     loading="lazy" width="200" height="80" style="transform: scale(1.5)"
+                                     title="Схема сверточной нейронной сети">
                             </div>
-                            <p class="text-center text-xs text-gray-500 mt-2">Схема CNN</p>
+                            <p class="text-center text-xs text-gray-500 mt-10">Схема CNN</p>
                         </div>
                     </div>
                 </div>
@@ -732,7 +759,7 @@
                 <div class="mb-10 p-6 border border-gray-200 rounded-lg bg-gray-50">
                     <h3 class="text-xl font-semibold text-gray-800 mb-3">3. Рекуррентные сети (RNN)</h3>
                     <div class="md:flex md:gap-6">
-                        <div class="md:w-2/3">
+                        <div class="md:w-2/3 mb-4 md:mb-0"> <!-- Added margin bottom for mobile -->
                             <p class="text-sm mb-4">Предназначены для <strong>последовательностей</strong>, где важен
                                 порядок: текст, речь, музыка, временные ряды. Умеют "помнить" предыдущие элементы
                                 последовательности благодаря <strong>скрытому состоянию</strong>, которое передается от
@@ -750,23 +777,24 @@
                                 информацию запоминать надолго, а какую забыть.</p>
                         </div>
                         <div class="md:w-1/3 flex flex-col justify-center items-center">
-                            <div class="relative w-56 h-24">
-                                <!-- Визуализация RNN -->
-                                <div class="absolute left-0 top-1/4 -translate-y-1/2 flex flex-col items-center space-y-1">
-                                    <img src="https://austingwalters.com/wp-content/uploads/2019/01/rnn-multihidden.png" alt="RNN Diagram"
-                                         class="w-full mt-5 h-auto rounded-md shadow-sm border border-gray-300" style="max-width: none !important; width: 100% !important; height: auto !important; transform: scale(0.9);" title="Схема рекуррентной нейронной сети">
-                                         <p class="text-center text-xs text-gray-500 mv-2">Схема RNN</p>
-                                </div>
+                            <!-- Container adjusted for potentially taller image -->
+                            <div class="relative w-56 h-auto mt-5 md:mt-0"> <!-- Added top margin for mobile -->
+                                <!-- Removed bad inline styles, added loading lazy, width/height for layout shift prevention -->
+                                <img src="https://austingwalters.com/wp-content/uploads/2019/01/rnn-multihidden.png" alt="RNN Diagram"
+                                     class="w-full h-auto rounded-md shadow-sm border border-gray-300 object-contain"
+                                     loading="lazy" width="224" height="150"
+                                     title="Схема рекуррентной нейронной сети">
+                            </div>
+                            <p class="text-center text-xs text-gray-500 mt-2">Схема RNN</p>
                         </div>
                     </div>
                 </div>
-            </div>
 
                 <!-- Transformer -->
                 <div class="p-6 border border-gray-200 rounded-lg bg-gray-50">
                     <h3 class="text-xl font-semibold text-gray-800 mb-3">4. Трансформеры</h3>
                     <div class="md:flex md:gap-6">
-                        <div class="md:w-2/3">
+                        <div class="md:w-2/3 mb-4 md:mb-0"> <!-- Added margin bottom for mobile -->
                             <p class="text-sm mb-4">Современная архитектура (с 2017 г.), которая произвела революцию в
                                 <strong>обработке текста</strong>. Ключевая идея – <strong>механизм внимания
                                     (attention)</strong>, особенно <strong>self-attention</strong> ("внимание к себе").
@@ -784,14 +812,16 @@
                             </ul>
                         </div>
                         <div class="md:w-1/3 flex flex-col justify-center items-center">
-                            <div class="relative w-48 h-32">
-                                <!-- Визуализация Трансформера -->
-                                <div class="absolute left-0 top-1/4 -translate-y-1/2 flex flex-col items-center space-y-1">
-                                <img src="https://habrastorage.org/webt/nm/yu/oq/nmyuoqb-9wqu9bssgxkvmhv9gmc.gif" alt="Transformer Diagram"
-                                     class="w-full h-auto rounded-md shadow-sm border border-gray-300" style="max-width: none !important; width: 100% !important; height: auto !important; transform: scale(1.7);" title="Упрощенная схема Трансформера">
-                                
+                            <!-- Container adjusted for potentially taller image -->
+                            <div class="relative w-48 h-auto mt-5 md:mt-0"> <!-- Added top margin for mobile -->
+                                <!-- Removed bad inline styles, added loading lazy, width/height for layout shift prevention -->
+                                <img src="https://habrastorage.org/webt/nm/yu/oq/nmyuoqb-9wqu9bssgxkvmhv9gmc.gif" alt="Transformer Diagram (GIF)"
+                                     class="w-full h-auto rounded-md shadow-sm border border-gray-300 object-contain"
+                                     loading="lazy" width="192" height="250" style="transform: scale(1.5)"
+                                     title="Упрощенная схема Трансформера">
                             </div>
-                        </div><p class="text-center text-xs text-gray-500 mt-2">Упрощенная схема Трансформера</p>
+                            <p class="text-center text-xs text-gray-500 mt-10">Упрощенная схема Трансформера</p>
+                        </div>
                     </div>
                 </div>
 
@@ -830,14 +860,14 @@
     <!-- Training section -->
     <section id="training" class="mb-16 scroll-mt-20">
         <div class="flex items-center mb-6">
-            <div class="bg-blue-100 p-3 rounded-full mr-4">
+            <div class="bg-blue-100 p-3 rounded-full mr-4 flex-shrink-0"> <!-- Added flex-shrink-0 -->
                 <i class="fas fa-graduation-cap text-blue-600 text-xl" aria-hidden="true"></i>
             </div>
             <h2 class="text-3xl font-bold text-gray-800">Обучение: Как нейросеть учится?</h2>
         </div>
 
         <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mb-8">
-            <div class="p-8">
+            <div class="p-6 md:p-8"> <!-- Responsive padding -->
                 <p class="mb-6">Обучение нейросети – это процесс подбора ее <strong>параметров</strong> (тех самых весов
                     и смещений) так, чтобы она хорошо решала нужную задачу. Самый распространенный способ – <strong>обучение
                         с учителем</strong>.</p>
@@ -845,10 +875,11 @@
                 <h3 class="text-xl font-semibold text-gray-800 mb-4">1. Цикл обучения с учителем</h3>
                 <p class="text-sm mb-6">Представьте, что мы учим сеть отличать кошек от собак на картинках. Процесс
                     выглядит так:</p>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Grid adapts: 1 col -> 2 cols (md) -> 3 cols (lg) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                         <h4 class="font-semibold mb-2 text-gray-800 flex items-center text-sm">
-                            <span class="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center mr-2 text-xs">1</span>
+                            <span class="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center mr-2 text-xs flex-shrink-0">1</span>
                             Данные
                         </h4>
                         <p class="text-xs text-gray-600">Берем много картинок с подписями "кошка" или "собака" (это
@@ -856,7 +887,7 @@
                     </div>
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                         <h4 class="font-semibold mb-2 text-gray-800 flex items-center text-sm">
-                            <span class="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center mr-2 text-xs">2</span>
+                            <span class="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center mr-2 text-xs flex-shrink-0">2</span>
                             Предсказание
                         </h4>
                         <p class="text-xs text-gray-600">Показываем сети картинку (например, кошки). Сеть (сначала с
@@ -865,7 +896,7 @@
                     </div>
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                         <h4 class="font-semibold mb-2 text-gray-800 flex items-center text-sm">
-                            <span class="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center mr-2 text-xs">3</span>
+                            <span class="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center mr-2 text-xs flex-shrink-0">3</span>
                             Ошибка
                         </h4>
                         <p class="text-xs text-gray-600">Сравниваем предсказание ("собака") с правильным ответом
@@ -874,7 +905,7 @@
                     </div>
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                         <h4 class="font-semibold mb-2 text-gray-800 flex items-center text-sm">
-                            <span class="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center mr-2 text-xs">4</span>
+                            <span class="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center mr-2 text-xs flex-shrink-0">4</span>
                             Коррекция (Backpropagation)
                         </h4>
                         <p class="text-xs text-gray-600">Используя <strong>обратное распространение ошибки</strong>,
@@ -882,7 +913,7 @@
                     </div>
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                         <h4 class="font-semibold mb-2 text-gray-800 flex items-center text-sm">
-                            <span class="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center mr-2 text-xs">5</span>
+                            <span class="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center mr-2 text-xs flex-shrink-0">5</span>
                             Обновление весов
                         </h4>
                         <p class="text-xs text-gray-600">С помощью <strong>оптимизатора</strong> (например, Adam или
@@ -890,7 +921,7 @@
                     </div>
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                         <h4 class="font-semibold mb-2 text-gray-800 flex items-center text-sm">
-                            <span class="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center mr-2 text-xs">6</span>
+                            <span class="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center mr-2 text-xs flex-shrink-0">6</span>
                             Повторение
                         </h4>
                         <p class="text-xs text-gray-600">Повторяем шаги 2-5 много раз для всех картинок
@@ -940,7 +971,8 @@
 
                 <h3 class="text-xl font-semibold text-gray-800 mb-4">4. Регуляризация: Борьба с переобучением</h3>
                 <p class="text-sm mb-6">Методы, которые не дают сети слишком усложняться и "зазубривать":</p>
-                <div class="grid md:grid-cols-3 gap-4 mb-8">
+                <!-- Grid adapts: 1 col -> 3 cols (md) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                     <div class="bg-gray-50 p-3 rounded border border-gray-200">
                         <h4 class="font-semibold text-xs mb-1 text-gray-700">L1/L2 Регуляризация</h4>
                         <p class="text-xs text-gray-600">Добавляет "штраф" к функции потерь за слишком большие значения
@@ -957,8 +989,9 @@
                             изменений данных (например, поворот картинки, добавление шума).</p>
                     </div>
                 </div>
+            </div> <!-- Closing p-8 -->
+        </div> <!-- Closing bg-white -->
 
-                
         <div class="flex justify-between items-center mt-8">
             <a href="#structure"
                class="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center transition">
@@ -974,19 +1007,20 @@
     <!-- Applications section -->
     <section id="applications" class="mb-16 scroll-mt-20">
         <div class="flex items-center mb-6">
-            <div class="bg-blue-100 p-3 rounded-full mr-4">
+            <div class="bg-blue-100 p-3 rounded-full mr-4 flex-shrink-0"> <!-- Added flex-shrink-0 -->
                 <i class="fas fa-mobile-alt text-blue-600 text-xl" aria-hidden="true"></i>
             </div>
             <h2 class="text-3xl font-bold text-gray-800">Применение: Где живут нейросети?</h2>
         </div>
 
         <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mb-8">
-            <div class="p-8">
+            <div class="p-6 md:p-8"> <!-- Responsive padding -->
                 <p class="mb-8 text-center max-w-2xl mx-auto">Нейросети уже повсюду, даже если мы этого не замечаем. Вот
                     несколько примеров:</p>
 
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Карточка 1: Зрение -->
+                <!-- Grid adapts: 1 col -> 2 cols (md) -> 3 cols (lg) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Card 1: Vision -->
                     <div class="flex flex-col bg-gray-50 rounded-lg border border-gray-200 p-6 card-hover-effect">
                         <div class="text-cyan-500 text-3xl mb-3"><i class="fas fa-eye"></i></div>
                         <h3 class="font-semibold text-lg mb-2 text-gray-800">Компьютерное зрение</h3>
@@ -995,7 +1029,7 @@
                         <span class="text-xs text-cyan-700 bg-cyan-100 px-2 py-0.5 rounded self-start">CNN, Vision Transformers</span>
                     </div>
 
-                    <!-- Карточка 2: Текст и Речь -->
+                    <!-- Card 2: NLP -->
                     <div class="flex flex-col bg-gray-50 rounded-lg border border-gray-200 p-6 card-hover-effect">
                         <div class="text-green-500 text-3xl mb-3"><i class="fas fa-language"></i></div>
                         <h3 class="font-semibold text-lg mb-2 text-gray-800">Текст и Речь (NLP)</h3>
@@ -1005,7 +1039,7 @@
                         <span class="text-xs text-green-700 bg-green-100 px-2 py-0.5 rounded self-start">Трансформеры, RNN/LSTM</span>
                     </div>
 
-                    <!-- Карточка 3: Рекомендации -->
+                    <!-- Card 3: Recommendations -->
                     <div class="flex flex-col bg-gray-50 rounded-lg border border-gray-200 p-6 card-hover-effect">
                         <div class="text-purple-500 text-3xl mb-3"><i class="fas fa-thumbs-up"></i></div>
                         <h3 class="font-semibold text-lg mb-2 text-gray-800">Рекомендательные системы</h3>
@@ -1014,7 +1048,7 @@
                         <span class="text-xs text-purple-700 bg-purple-100 px-2 py-0.5 rounded self-start">Разные архитектуры</span>
                     </div>
 
-                    <!-- Карточка 4: Медицина -->
+                    <!-- Card 4: Medicine -->
                     <div class="flex flex-col bg-gray-50 rounded-lg border border-gray-200 p-6 card-hover-effect">
                         <div class="text-red-500 text-3xl mb-3"><i class="fas fa-heartbeat"></i></div>
                         <h3 class="font-semibold text-lg mb-2 text-gray-800">Медицина</h3>
@@ -1024,7 +1058,7 @@
                         <span class="text-xs text-red-700 bg-red-100 px-2 py-0.5 rounded self-start">CNN, Трансформеры</span>
                     </div>
 
-                    <!-- Карточка 5: Финансы -->
+                    <!-- Card 5: Finance -->
                     <div class="flex flex-col bg-gray-50 rounded-lg border border-gray-200 p-6 card-hover-effect">
                         <div class="text-yellow-500 text-3xl mb-3"><i class="fas fa-chart-line"></i></div>
                         <h3 class="font-semibold text-lg mb-2 text-gray-800">Финансы и Бизнес</h3>
@@ -1033,7 +1067,7 @@
                         <span class="text-xs text-yellow-700 bg-yellow-100 px-2 py-0.5 rounded self-start">MLP, RNN, Трансформеры</span>
                     </div>
 
-                    <!-- Карточка 6: Творчество -->
+                    <!-- Card 6: Creativity -->
                     <div class="flex flex-col bg-gray-50 rounded-lg border border-gray-200 p-6 card-hover-effect">
                         <div class="text-indigo-500 text-3xl mb-3"><i class="fas fa-paint-brush"></i></div>
                         <h3 class="font-semibold text-lg mb-2 text-gray-800">Творчество и Генерация</h3>
@@ -1044,9 +1078,10 @@
                     </div>
                 </div>
 
+                <!-- Future/Challenges section: Stacks on mobile -->
                 <div class="mt-10 bg-blue-800 text-white p-6 rounded-lg">
                     <h3 class="text-lg font-semibold mb-4">Будущее нейросетей и вызовы</h3>
-                    <div class="grid md:grid-cols-2 gap-6 text-sm">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
                         <div>
                             <h4 class="font-medium mb-2 text-blue-300">Что нас ждет?</h4>
                             <ul class="list-disc pl-5 space-y-1 text-blue-200">
@@ -1094,14 +1129,14 @@
     <!-- Quiz section -->
     <section id="quiz" class="mb-16 scroll-mt-20">
         <div class="flex items-center mb-6">
-            <div class="bg-blue-100 p-3 rounded-full mr-4">
+            <div class="bg-blue-100 p-3 rounded-full mr-4 flex-shrink-0"> <!-- Added flex-shrink-0 -->
                 <i class="fas fa-question-circle text-blue-600 text-xl" aria-hidden="true"></i>
             </div>
             <h2 class="text-3xl font-bold text-gray-800">Проверьте свои знания</h2>
         </div>
 
         <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mb-8">
-            <div class="p-8">
+            <div class="p-6 md:p-8"> <!-- Responsive padding -->
                 <p class="text-sm text-gray-600 mb-8 text-center">Выберите один правильный ответ для каждого
                     вопроса.</p>
 
@@ -1115,6 +1150,7 @@
                             <h3 class="text-sm font-semibold text-gray-800 leading-tight">Что такое искусственный нейрон
                                 в нейросети?</h3>
                         </div>
+                        <!-- Options stack nicely -->
                         <div class="space-y-2 pl-9">
                             <button class="quiz-option block w-full text-xs bg-white border border-gray-200 rounded-md p-2.5 text-left hover:bg-gray-50">
                                 <span class="font-medium text-blue-600 mr-2">A.</span> Физический компонент компьютера.
@@ -1220,7 +1256,8 @@
 
                 <div class="flex justify-center mt-8">
                     <button id="check-answers"
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2.5 rounded-lg font-semibold text-base inline-flex items-center transition duration-300 ease-in-out transform hover:scale-105 shadow hover:shadow-lg">
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2.5 rounded-lg font-semibold text-base inline-flex items-center transition duration-300 ease-in-out transform hover:scale-105 shadow hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    > <!-- Added disabled styles -->
                         Проверить ответы <i class="fas fa-check-circle ml-2" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -1240,7 +1277,7 @@
                         </div>
                     </div>
                     <div id="answers-feedback" class="space-y-3 mt-5">
-                        <!-- Feedback appears here -->
+                        <!-- Feedback appears here via JS -->
                     </div>
                     <div class="mt-6 flex justify-center">
                         <button id="try-again"
@@ -1267,17 +1304,18 @@
     <!-- References Section -->
     <section id="references" class="mb-16 scroll-mt-20">
         <div class="flex items-center mb-6">
-            <div class="bg-blue-100 p-3 rounded-full mr-4">
+            <div class="bg-blue-100 p-3 rounded-full mr-4 flex-shrink-0"> <!-- Added flex-shrink-0 -->
                 <i class="fas fa-book text-blue-600 text-xl" aria-hidden="true"></i>
             </div>
             <h2 class="text-3xl font-bold text-gray-800">Источники и дополнительная литература</h2>
         </div>
-        <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden p-8 text-sm text-gray-700">
+        <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden p-6 md:p-8 text-sm text-gray-700"> <!-- Responsive padding -->
             <p class="mb-6">Этот учебник основан на общедоступной информации и классических работах в области нейронных
                 сетей. Для более глубокого изучения рекомендуем следующие ресурсы (многие на английском языке):</p>
 
             <h4 class="font-semibold text-gray-800 mb-3">Ключевые работы и концепции:</h4>
-            <ul class="list-disc pl-5 space-y-2 mb-6">
+            <!-- List items should wrap fine on mobile -->
+            <ul class="list-disc pl-5 space-y-2 mb-6 break-words"> <!-- Added break-words for long titles/links -->
                 <li>McCulloch, W. S., & Pitts, W. (1943). <i>A logical calculus of the ideas immanent in nervous
                     activity.</i> (Первая модель нейрона)
                 </li>
@@ -1301,7 +1339,7 @@
             </ul>
 
             <h4 class="font-semibold text-gray-800 mb-3">Онлайн-ресурсы и курсы:</h4>
-            <ul class="list-disc pl-5 space-y-2 mb-6">
+            <ul class="list-disc pl-5 space-y-2 mb-6 break-words"> <!-- Added break-words -->
                 <li><a href="https://www.deeplearning.ai/" target="_blank" rel="noopener noreferrer"
                        class="text-blue-600 hover:underline">DeepLearning.AI</a> / <a
                         href="https://www.coursera.org/specializations/deep-learning" target="_blank"
@@ -1331,7 +1369,7 @@
             </ul>
 
             <h4 class="font-semibold text-gray-800 mb-3">Книги (для начинающих и продолжающих):</h4>
-            <ul class="list-disc pl-5 space-y-2 mb-6">
+            <ul class="list-disc pl-5 space-y-2 mb-6 break-words"> <!-- Added break-words -->
                 <li>Нильсен М. "Нейронные сети и глубокое обучение" (онлайн-книга, отличный вводный ресурс, есть
                     перевод)
                 </li>
@@ -1365,7 +1403,8 @@
 <!-- Footer -->
 <footer class="bg-gray-800 text-white pt-10 pb-8">
     <div class="container mx-auto px-4">
-        <div class="grid md:grid-cols-3 gap-8 mb-8 text-sm">
+        <!-- Grid adapts: 1 col -> 3 cols (md) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-sm">
             <div>
                 <h3 class="text-base font-semibold mb-3 opacity-90">Об учебнике</h3>
                 <p class="text-gray-400 leading-relaxed">Краткое введение в мир нейронных сетей: история, основы,
@@ -1390,14 +1429,15 @@
             <div>
                 <h3 class="text-base font-semibold mb-3 opacity-90">Полезные ресурсы</h3>
                 <ul class="space-y-1.5">
-                    <li><a href="https://playground.tensorflow.org/" class="text-gray-400 hover:text-white transition"
-                           target="_blank" rel="noopener noreferrer">TensorFlow Playground <i
+                    <!-- Added break-words for link text -->
+                    <li class="break-words"><a href="https://playground.tensorflow.org/" class="text-gray-400 hover:text-white transition"
+                                               target="_blank" rel="noopener noreferrer">TensorFlow Playground <i
                             class="fas fa-external-link-alt text-xs ml-1 opacity-70"></i></a></li>
-                    <li><a href="https://pytorch.org/tutorials/" class="text-gray-400 hover:text-white transition"
-                           target="_blank" rel="noopener noreferrer">PyTorch Tutorials <i
+                    <li class="break-words"><a href="https://pytorch.org/tutorials/" class="text-gray-400 hover:text-white transition"
+                                               target="_blank" rel="noopener noreferrer">PyTorch Tutorials <i
                             class="fas fa-external-link-alt text-xs ml-1 opacity-70"></i></a></li>
-                    <li><a href="https://www.deeplearning.ai/" class="text-gray-400 hover:text-white transition"
-                           target="_blank" rel="noopener noreferrer">DeepLearning.AI <i
+                    <li class="break-words"><a href="https://www.deeplearning.ai/" class="text-gray-400 hover:text-white transition"
+                                               target="_blank" rel="noopener noreferrer">DeepLearning.AI <i
                             class="fas fa-external-link-alt text-xs ml-1 opacity-70"></i></a></li>
                 </ul>
             </div>
@@ -1413,22 +1453,27 @@
     window.addEventListener('scroll', () => {
         const progressBar = document.querySelector('.progress-bar');
         if (!progressBar) return;
-        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        // Use Math.max to prevent division by zero if scrollHeight is less than clientHeight
+        const scrollHeight = Math.max(1, document.documentElement.scrollHeight - document.documentElement.clientHeight);
         const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-        const scrollProgress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-        progressBar.style.width = `${scrollProgress}%`;
+        const scrollProgress = (scrollTop / scrollHeight) * 100;
+        // Use Math.min to ensure progress doesn't exceed 100% due to potential rounding/timing issues
+        progressBar.style.width = `${Math.min(100, scrollProgress)}%`;
     });
 
     // Interactive Layer Explanation in Basics Section
     (() => {
-        const layerClickables = document.querySelectorAll('.nn-diagram .nn-layer');
+        const layerDiagram = document.querySelector('.nn-diagram'); // Find container
+        if (!layerDiagram) return; // Exit if diagram not found
+
+        const layerClickables = layerDiagram.querySelectorAll('.nn-layer');
         const explanationContents = document.querySelectorAll('.layer-explanations .explanation-content');
         const defaultExplanation = document.getElementById('explanation-default');
 
         if (!layerClickables.length || !explanationContents.length) return;
 
         const showExplanation = (targetId) => {
-            // Remove active class from all layers
+            // Remove active class from all layers within this specific diagram
             layerClickables.forEach(layer => layer.classList.remove('active'));
             // Hide all explanations
             explanationContents.forEach(content => {
@@ -1436,15 +1481,20 @@
                 content.classList.remove('block');
             });
 
-            const targetLayer = document.querySelector(`.nn-layer[data-target="${targetId}"]`);
+            // Find the specific layer and explanation based on targetId
+            const targetLayer = layerDiagram.querySelector(`.nn-layer[data-target="${targetId}"]`);
             const targetExplanation = document.getElementById(targetId);
 
             if (targetLayer && targetExplanation) {
                 targetLayer.classList.add('active');
                 targetExplanation.classList.remove('hidden');
                 targetExplanation.classList.add('block');
+                // Optional: Scroll explanation into view on smaller screens if needed
+                if (window.innerWidth < 768) { // Check if below md breakpoint
+                    targetExplanation.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             } else if (defaultExplanation) {
-                // Show default if target not found (shouldn't happen with correct setup)
+                // Fallback to default explanation
                 defaultExplanation.classList.remove('hidden');
                 defaultExplanation.classList.add('block');
             }
@@ -1453,19 +1503,26 @@
         layerClickables.forEach(layer => {
             layer.addEventListener('click', () => {
                 const targetId = layer.dataset.target;
-                showExplanation(targetId);
+                if(targetId) { // Check if data-target exists
+                    showExplanation(targetId);
+                }
             });
-            // Add keyboard accessibility (Enter key)
+            // Keyboard accessibility (Enter or Space key)
             layer.addEventListener('keydown', (event) => {
                 if (event.key === 'Enter' || event.key === ' ') {
                     event.preventDefault(); // Prevent page scroll on Space
                     const targetId = layer.dataset.target;
-                    showExplanation(targetId);
+                    if(targetId) {
+                        showExplanation(targetId);
+                        // Optionally move focus to the explanation container
+                        const targetExplanation = document.getElementById(targetId);
+                        targetExplanation?.focus(); // May need tabindex="-1" on explanations
+                    }
                 }
             });
         });
 
-        // Initially show the default message
+        // Ensure default message is shown initially
         if (defaultExplanation) {
             explanationContents.forEach(content => {
                 if (content.id !== 'explanation-default') {
@@ -1480,17 +1537,24 @@
     })();
 
 
-    // Quiz Functionality
+    // Quiz Functionality (No major changes, just ensuring robustness)
     (() => {
-        const quizCards = document.querySelectorAll('.quiz-card');
-        const checkAnswersBtn = document.getElementById('check-answers');
-        const quizResultsDiv = document.getElementById('quiz-results');
-        const correctAnswersSpan = document.getElementById('correct-answers');
-        const resultProgressBar = document.getElementById('result-progress-bar');
-        const feedbackContainer = document.getElementById('answers-feedback');
-        const tryAgainBtn = document.getElementById('try-again');
+        const quizSection = document.getElementById('quiz');
+        if (!quizSection) return; // Only run if quiz section exists
 
-        if (!checkAnswersBtn || !quizResultsDiv || !tryAgainBtn) return;
+        const quizCards = quizSection.querySelectorAll('.quiz-card');
+        const checkAnswersBtn = quizSection.querySelector('#check-answers');
+        const quizResultsDiv = quizSection.querySelector('#quiz-results');
+        const correctAnswersSpan = quizSection.querySelector('#correct-answers');
+        const resultProgressBar = quizSection.querySelector('#result-progress-bar');
+        const feedbackContainer = quizSection.querySelector('#answers-feedback');
+        const tryAgainBtn = quizSection.querySelector('#try-again');
+
+        // Early exit if essential elements are missing
+        if (!checkAnswersBtn || !quizResultsDiv || !correctAnswersSpan || !resultProgressBar || !feedbackContainer || !tryAgainBtn || !quizCards.length) {
+            console.warn("Quiz elements missing, functionality disabled.");
+            return;
+        }
 
         const correctAnswersMap = ['B', 'B', 'C', 'C', 'A']; // Correct answers for the 5 questions
         const feedback = [
@@ -1509,8 +1573,12 @@
             options.forEach(option => {
                 option.addEventListener('click', () => {
                     if (questionsAnswered) return; // Don't allow changes after checking
+
+                    // Deselect siblings within the same question card
                     options.forEach(opt => opt.classList.remove('selected'));
+                    // Select clicked option
                     option.classList.add('selected');
+                    // Store answer (using optional chaining for safety)
                     userAnswers[questionIndex] = option.querySelector('span')?.textContent.trim().charAt(0);
                 });
             });
@@ -1519,29 +1587,22 @@
         checkAnswersBtn.addEventListener('click', () => {
             if (questionsAnswered) return; // Prevent re-checking
 
-            // Check if all questions are answered
-            if (userAnswers.some(a => a === null)) {
-                // Find first unanswered question card for focus/alert
-                let firstUnanswered = -1;
-                for (let i = 0; i < userAnswers.length; i++) {
-                    if (userAnswers[i] === null) {
-                        firstUnanswered = i;
-                        break;
-                    }
+            // Check if all questions have been answered
+            const firstUnansweredIndex = userAnswers.findIndex(a => a === null);
+            if (firstUnansweredIndex !== -1) {
+                alert(`Пожалуйста, ответьте на вопрос ${firstUnansweredIndex + 1}.`);
+                // Scroll to and focus the first unanswered question
+                const firstUnansweredCard = quizCards[firstUnansweredIndex];
+                if (firstUnansweredCard) {
+                    firstUnansweredCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Focus the first option for better accessibility
+                    firstUnansweredCard.querySelector('.quiz-option')?.focus();
                 }
-                if (firstUnanswered !== -1) {
-                    alert(`Пожалуйста, ответьте на вопрос ${firstUnanswered + 1}.`);
-                    quizCards[firstUnanswered]?.scrollIntoView({behavior: 'smooth', block: 'center'});
-                    // Optionally focus the first option of that question
-                    quizCards[firstUnanswered]?.querySelector('.quiz-option')?.focus();
-                } else {
-                    alert("Пожалуйста, ответьте на все вопросы."); // Fallback
-                }
-                return;
+                return; // Stop processing
             }
 
             let correctCount = 0;
-            feedbackContainer.innerHTML = '';
+            feedbackContainer.innerHTML = ''; // Clear previous feedback
             questionsAnswered = true; // Mark as answered
 
             quizCards.forEach((card, i) => {
@@ -1550,59 +1611,74 @@
                 const isCorrect = selectedLetter === correctLetter;
                 if (isCorrect) correctCount++;
 
+                // Create and append feedback message
                 const feedbackItem = document.createElement('div');
-                const feedbackText = feedback[i][isCorrect ? 0 : 1];
+                const feedbackText = feedback[i][isCorrect ? 0 : 1]; // Get appropriate feedback text
                 feedbackItem.className = `p-2 rounded border text-xs ${isCorrect ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'}`;
                 feedbackItem.innerHTML = `<strong class="font-semibold">Вопрос ${i + 1}:</strong> ${feedbackText}`;
                 feedbackContainer.appendChild(feedbackItem);
 
-                card.querySelectorAll('.quiz-option').forEach(opt => {
+                // Style and disable options
+                const options = card.querySelectorAll('.quiz-option');
+                options.forEach(opt => {
                     const optLetter = opt.querySelector('span')?.textContent.trim().charAt(0);
-                    opt.classList.remove('selected'); // Remove selection highlight
-                    opt.disabled = true; // Disable button
+                    opt.disabled = true; // Disable button after checking
+                    opt.classList.remove('selected', 'hover:bg-gray-50'); // Remove selection and hover effect
+
                     if (optLetter === correctLetter) {
-                        opt.classList.add('correct'); // Highlight correct
-                    } else if (optLetter === selectedLetter && !isCorrect) { // Only mark incorrect if it was selected
-                        opt.classList.add('incorrect'); // Highlight wrong selection
+                        opt.classList.add('correct'); // Highlight correct answer
+                    } else if (optLetter === selectedLetter && !isCorrect) {
+                        opt.classList.add('incorrect'); // Highlight incorrect selection
                     }
-                    // Make non-selected buttons slightly transparent
-                    if (optLetter !== selectedLetter) {
+
+                    // Make non-selected, non-correct options slightly transparent
+                    if (optLetter !== selectedLetter && optLetter !== correctLetter) {
                         opt.classList.add('opacity-60');
                     }
                 });
             });
 
+            // Update results display
             correctAnswersSpan.textContent = `${correctCount}/${correctAnswersMap.length}`;
-            // Ensure progress bar updates smoothly
+            // Use requestAnimationFrame for smoother progress bar update
             requestAnimationFrame(() => {
                 resultProgressBar.style.width = `${(correctCount / correctAnswersMap.length) * 100}%`;
             });
-            quizResultsDiv.classList.remove('hidden');
-            checkAnswersBtn.disabled = true;
-            checkAnswersBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            quizResultsDiv.classList.remove('hidden'); // Show results area
+            checkAnswersBtn.disabled = true; // Disable check button
+            // checkAnswersBtn.classList.add('opacity-50', 'cursor-not-allowed'); // Already handled by :disabled selector
             tryAgainBtn.classList.remove('hidden'); // Show try again button
-            quizResultsDiv.scrollIntoView({behavior: 'smooth', block: 'center'});
+
+            // Scroll results into view
+            quizResultsDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
 
         tryAgainBtn.addEventListener('click', () => {
+            // Reset state
             userAnswers.fill(null);
             questionsAnswered = false;
+
+            // Reset visual state of options
             quizCards.forEach(card => {
                 card.querySelectorAll('.quiz-option').forEach(opt => {
                     opt.classList.remove('selected', 'correct', 'incorrect', 'opacity-60');
                     opt.disabled = false;
+                    // Re-enable hover effect if needed (Tailwind handles this automatically when not disabled)
                 });
             });
+
+            // Hide results, clear feedback
             quizResultsDiv.classList.add('hidden');
             feedbackContainer.innerHTML = '';
+            resultProgressBar.style.width = '0%'; // Reset progress bar visually
+
+            // Re-enable check button and hide try again button
             checkAnswersBtn.disabled = false;
-            checkAnswersBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            tryAgainBtn.classList.add('hidden'); // Hide until next check
-            // Scroll back to the quiz start if desired
-            const quizElement = document.getElementById('quiz');
-            if (quizElement) {
-                quizElement.scrollIntoView({behavior: 'smooth', block: 'start'});
-            }
+            // checkAnswersBtn.classList.remove('opacity-50', 'cursor-not-allowed'); // Handled by :disabled
+            tryAgainBtn.classList.add('hidden');
+
+            // Scroll back to the quiz start
+            quizSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     })();
 
